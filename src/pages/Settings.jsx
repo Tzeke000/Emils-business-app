@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
-import { Save, Zap } from 'lucide-react';
+import { Save, Moon } from 'lucide-react';
 import { toast } from 'sonner';
 
 export default function Settings() {
@@ -61,7 +61,7 @@ export default function Settings() {
     <div className="p-6 md:p-8 max-w-2xl mx-auto pb-24 md:pb-8">
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-foreground tracking-tight">Settings</h1>
-        <p className="text-sm text-muted-foreground mt-1">Configure your AI agent and payout info</p>
+        <p className="text-sm text-muted-foreground mt-1">Configure Emil and payout info</p>
       </div>
 
       <div className="space-y-6">
@@ -69,9 +69,9 @@ export default function Settings() {
         <div className="bg-card rounded-2xl border border-border p-6 space-y-5">
           <div className="flex items-center gap-3 mb-2">
             <div className="p-2 rounded-xl bg-primary/10">
-              <Zap className="w-5 h-5 text-primary" />
+              <Moon className="w-5 h-5 text-primary" />
             </div>
-            <h2 className="text-sm font-semibold text-foreground">Agent Configuration</h2>
+            <h2 className="text-sm font-semibold text-foreground">Emil Configuration</h2>
           </div>
 
           <div className="space-y-2">
@@ -106,7 +106,7 @@ export default function Settings() {
           <div className="flex items-center justify-between py-2">
             <div>
               <p className="text-sm font-medium text-foreground">Agent Active</p>
-              <p className="text-xs text-muted-foreground">Enable or disable agent operations</p>
+              <p className="text-xs text-muted-foreground">Enable or disable Emil's operations</p>
             </div>
             <Switch
               checked={form.is_active}
@@ -117,7 +117,7 @@ export default function Settings() {
           <div className="flex items-center justify-between py-2">
             <div>
               <p className="text-sm font-medium text-foreground">Auto Mode</p>
-              <p className="text-xs text-muted-foreground">Allow agent to act autonomously</p>
+              <p className="text-xs text-muted-foreground">Allow Emil to act autonomously</p>
             </div>
             <Switch
               checked={form.auto_mode}

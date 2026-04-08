@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import ReactMarkdown from 'react-markdown';
-import { Zap, Copy, CheckCircle2, Clock, AlertCircle, ChevronRight, Loader2 } from 'lucide-react';
+import { Moon, Copy, CheckCircle2, Clock, AlertCircle, ChevronRight, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
 
@@ -31,7 +31,7 @@ function ToolCallDisplay({ toolCall }) {
     success: { icon: CheckCircle2, color: 'text-emerald-400', spin: false },
     failed: { icon: AlertCircle, color: 'text-red-400', spin: false },
     error: { icon: AlertCircle, color: 'text-red-400', spin: false },
-  }[status] || { icon: Zap, color: 'text-muted-foreground', spin: false };
+  }[status] || { icon: Moon, color: 'text-muted-foreground', spin: false };
 
   const Icon = statusConfig.icon;
 
@@ -72,7 +72,7 @@ export default function MessageBubble({ message }) {
     <div className={cn('flex gap-3 max-w-3xl', isUser ? 'ml-auto justify-end' : 'mr-auto')}>
       {!isUser && (
         <div className="w-7 h-7 rounded-lg bg-primary/15 flex items-center justify-center shrink-0 mt-1">
-          <Zap className="w-3.5 h-3.5 text-primary" />
+          <Moon className="w-3.5 h-3.5 text-primary" />
         </div>
       )}
       <div className={cn('max-w-[85%] min-w-0', isUser && 'flex flex-col items-end')}>

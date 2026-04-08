@@ -23,8 +23,8 @@ export default function EarningsChart({ earnings }) {
           <AreaChart data={chartData}>
             <defs>
               <linearGradient id="earningsGradient" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="hsl(252, 87%, 67%)" stopOpacity={0.3} />
-                <stop offset="95%" stopColor="hsl(252, 87%, 67%)" stopOpacity={0} />
+                <stop offset="5%" stopColor="hsl(220, 60%, 70%)" stopOpacity={0.3} />
+                <stop offset="95%" stopColor="hsl(220, 60%, 70%)" stopOpacity={0} />
               </linearGradient>
             </defs>
             <XAxis
@@ -52,7 +52,7 @@ export default function EarningsChart({ earnings }) {
             <Area
               type="monotone"
               dataKey="amount"
-              stroke="hsl(252, 87%, 67%)"
+              stroke="hsl(220, 60%, 70%)"
               strokeWidth={2}
               fill="url(#earningsGradient)"
             />

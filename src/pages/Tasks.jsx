@@ -5,13 +5,13 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Plus, Search, CheckCircle2, Clock, AlertCircle, Zap } from 'lucide-react';
+import { Plus, Search, CheckCircle2, Clock, AlertCircle, Moon } from 'lucide-react';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 import TaskForm from '../components/tasks/TaskForm';
 
 const statusConfig = {
-  queued: { label: 'Queued', icon: Zap, color: 'bg-primary/10 text-primary border-primary/20' },
+  queued: { label: 'Queued', icon: Moon, color: 'bg-primary/10 text-primary border-primary/20' },
   in_progress: { label: 'In Progress', icon: Clock, color: 'bg-amber-500/10 text-amber-400 border-amber-500/20' },
   completed: { label: 'Completed', icon: CheckCircle2, color: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' },
   failed: { label: 'Failed', icon: AlertCircle, color: 'bg-red-500/10 text-red-400 border-red-500/20' },
@@ -52,7 +52,7 @@ export default function Tasks() {
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-2xl font-bold text-foreground tracking-tight">Tasks</h1>
-          <p className="text-sm text-muted-foreground mt-1">Agent work items and their status</p>
+          <p className="text-sm text-muted-foreground mt-1">Emil's work items and their status</p>
         </div>
         <Button onClick={() => setShowForm(true)} className="gap-2">
           <Plus className="w-4 h-4" /> Add Task
@@ -95,7 +95,7 @@ export default function Tasks() {
       <div className="space-y-2">
         {filtered.length === 0 ? (
           <div className="text-center py-16 text-muted-foreground text-sm">
-            No tasks found. The agent will create tasks as it works on your goals.
+            No tasks found. Emil will create tasks as it works on your goals.
           </div>
         ) : (
           filtered.map((task) => {

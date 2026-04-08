@@ -1,7 +1,7 @@
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
-import { DollarSign, ListTodo, TrendingUp, Zap } from 'lucide-react';
+import { DollarSign, ListTodo, TrendingUp, Moon } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import StatCard from '../components/dashboard/StatCard';
 import ActivityFeed from '../components/dashboard/ActivityFeed';
@@ -28,7 +28,7 @@ export default function Dashboard() {
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-foreground tracking-tight">Dashboard</h1>
-        <p className="text-sm text-muted-foreground mt-1">Monitor your AI agent's business operations</p>
+        <p className="text-sm text-muted-foreground mt-1">Monitor Emil's business operations under the moonlight</p>
       </div>
 
       {/* Stats Grid */}
@@ -53,10 +53,10 @@ export default function Dashboard() {
           subtitle={`${activeTasks} in progress`}
         />
         <StatCard
-          title="Agent Status"
+          title="Emil Status"
           value="Active"
-          icon={Zap}
-          subtitle="Ready for commands"
+          icon={Moon}
+          subtitle="Moonlit and ready"
         />
       </div>
 
@@ -74,15 +74,15 @@ export default function Dashboard() {
       <div className="mt-6">
         <Link
           to="/chat"
-          className="block bg-gradient-to-r from-primary/10 to-primary/5 border border-primary/20 rounded-2xl p-6 hover:border-primary/40 transition-all duration-300 group"
+          className="block bg-gradient-to-r from-primary/10 to-accent/5 border border-primary/20 rounded-2xl p-6 hover:border-primary/40 transition-all duration-300 group"
         >
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 rounded-2xl bg-primary/20 flex items-center justify-center group-hover:scale-105 transition-transform">
-              <Zap className="w-6 h-6 text-primary" />
+              <Moon className="w-6 h-6 text-primary" />
             </div>
             <div>
-              <h3 className="text-sm font-semibold text-foreground">Talk to your agent</h3>
-              <p className="text-xs text-muted-foreground mt-0.5">Give it a business goal, task, or strategy to execute</p>
+              <h3 className="text-sm font-semibold text-foreground">Talk to Emil</h3>
+              <p className="text-xs text-muted-foreground mt-0.5">Give Emil a business goal, task, or strategy to execute</p>
             </div>
           </div>
         </Link>

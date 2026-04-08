@@ -1,13 +1,13 @@
 import React from 'react';
 import { format } from 'date-fns';
-import { CheckCircle2, Clock, AlertCircle, Zap } from 'lucide-react';
+import { CheckCircle2, Clock, AlertCircle, Moon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const statusIcons = {
   completed: { icon: CheckCircle2, color: 'text-emerald-400' },
   in_progress: { icon: Clock, color: 'text-amber-400' },
   failed: { icon: AlertCircle, color: 'text-red-400' },
-  queued: { icon: Zap, color: 'text-primary' },
+  queued: { icon: Moon, color: 'text-primary' },
 };
 
 export default function ActivityFeed({ tasks }) {
@@ -15,7 +15,7 @@ export default function ActivityFeed({ tasks }) {
     return (
       <div className="bg-card rounded-2xl border border-border p-6">
         <h3 className="text-sm font-semibold text-foreground mb-4">Recent Activity</h3>
-        <p className="text-sm text-muted-foreground text-center py-8">No activity yet. Start chatting with your agent!</p>
+        <p className="text-sm text-muted-foreground text-center py-8">No activity yet. Start chatting with Emil!</p>
       </div>
     );
   }

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { base44 } from '@/api/base44Client';
-import { Send, Plus, Loader2 } from 'lucide-react';
+import { Send, Plus, Loader2, Moon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import MessageBubble from '../components/chat/MessageBubble';
 
@@ -132,7 +132,7 @@ export default function Chat() {
             <Plus className="w-4 h-4" />
           </Button>
           <span className="text-sm font-medium text-foreground truncate">
-            {activeConv?.metadata?.name || 'OpenClaw Agent'}
+            {activeConv?.metadata?.name || 'Emil'}
           </span>
         </div>
 
@@ -145,11 +145,11 @@ export default function Chat() {
           ) : messages.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full text-center">
               <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-4">
-                <span className="text-3xl">⚡</span>
+                <Moon className="w-8 h-8 text-primary" />
               </div>
-              <h2 className="text-lg font-semibold text-foreground">OpenClaw Agent</h2>
+              <h2 className="text-lg font-semibold text-foreground">Emil</h2>
               <p className="text-sm text-muted-foreground mt-2 max-w-md">
-                Tell me your business goal and I'll start working on it. I can research opportunities, create strategies, build content, and track revenue.
+                Tell me your business goal and I'll start working on it by moonlight. I can research opportunities, create strategies, build content, and track revenue.
               </p>
             </div>
           ) : (
@@ -166,7 +166,7 @@ export default function Chat() {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={handleKeyDown}
-                placeholder="Give your agent a task..."
+                placeholder="Give Emil a task..."
                 rows={1}
                 className="w-full bg-secondary border border-border rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground resize-none focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/50 transition-all"
                 style={{ minHeight: '44px', maxHeight: '120px' }}

@@ -1,11 +1,11 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { LayoutDashboard, MessageSquare, ListTodo, DollarSign, Settings, Zap } from 'lucide-react';
+import { LayoutDashboard, MessageSquare, ListTodo, DollarSign, Settings, Moon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const navItems = [
   { path: '/', label: 'Dashboard', icon: LayoutDashboard },
-  { path: '/chat', label: 'Agent Chat', icon: MessageSquare },
+  { path: '/chat', label: 'Chat with Emil', icon: MessageSquare },
   { path: '/tasks', label: 'Tasks', icon: ListTodo },
   { path: '/earnings', label: 'Earnings', icon: DollarSign },
   { path: '/settings', label: 'Settings', icon: Settings },
@@ -19,11 +19,11 @@ export default function Sidebar() {
       {/* Logo */}
       <div className="p-6 flex items-center gap-3">
         <div className="w-9 h-9 rounded-xl bg-primary/20 flex items-center justify-center">
-          <Zap className="w-5 h-5 text-primary" />
+          <Moon className="w-5 h-5 text-primary" />
         </div>
         <div>
-          <h1 className="text-lg font-semibold text-foreground tracking-tight">OpenClaw</h1>
-          <p className="text-[11px] text-muted-foreground font-mono">AI AGENT PLATFORM</p>
+          <h1 className="text-lg font-semibold text-foreground tracking-tight">Emil</h1>
+          <p className="text-[11px] text-muted-foreground font-mono">LUNAR AI AGENT</p>
         </div>
       </div>
 
@@ -52,10 +52,10 @@ export default function Sidebar() {
       {/* Status */}
       <div className="p-4 mx-3 mb-4 rounded-xl bg-secondary/50 border border-border">
         <div className="flex items-center gap-2 mb-1">
-          <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-          <span className="text-xs font-medium text-foreground">Agent Online</span>
+          <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+          <span className="text-xs font-medium text-foreground">Emil Online</span>
         </div>
-        <p className="text-[11px] text-muted-foreground">Ready to execute tasks</p>
+        <p className="text-[11px] text-muted-foreground">Moonlit and ready</p>
       </div>
     </aside>
   );

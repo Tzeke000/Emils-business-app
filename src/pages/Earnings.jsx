@@ -28,7 +28,7 @@ export default function Earnings() {
     <div className="p-6 md:p-8 max-w-6xl mx-auto pb-24 md:pb-8">
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-foreground tracking-tight">Earnings</h1>
-        <p className="text-sm text-muted-foreground mt-1">Track your agent's revenue generation</p>
+        <p className="text-sm text-muted-foreground mt-1">Track Emil's revenue generation</p>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
@@ -46,7 +46,7 @@ export default function Earnings() {
         </div>
         {earnings.length === 0 ? (
           <div className="p-8 text-center text-sm text-muted-foreground">
-            No earnings yet. Your agent will log revenue as it generates income.
+            No earnings yet. Emil will log revenue as it generates income.
           </div>
         ) : (
           <div className="divide-y divide-border">
