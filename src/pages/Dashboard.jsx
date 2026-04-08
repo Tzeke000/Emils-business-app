@@ -18,13 +18,9 @@ export default function Dashboard() {
     queryKey: ['earnings'],
     queryFn: () => base44.entities.Earning.list('-created_date', 50),
   });
-  const { data: logs = [] } = useQuery({
-    queryKey: ['activityLog'],
-    queryFn: () => base44.entities.ActivityLog.list('-created_date', 1),
-  });
-  const { data: sessions = [] } = useQuery({
-    queryKey: ['sessions'],
-    queryFn: () => base44.entities.WorkSession.list('-created_date', 1),
+  const { data: healthRecords = [] } = useQuery({
+    queryKey: ['systemHealth'],
+    queryFn: () => base44.entities.SystemHealth.list('-updated_date', 1),
   });
   const { data: configs = [] } = useQuery({
     queryKey: ['agentConfig'],
@@ -49,7 +45,7 @@ export default function Dashboard() {
       </div>
 
       <div className="mb-6">
-        <HealthCards lastLog={logs[0] || null} lastSession={sessions[0] || null} config={configs[0] || null} />
+        <HealthCards health={healthRecords[0] || null} config={configs[0] || null} />
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">

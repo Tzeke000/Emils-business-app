@@ -1,0 +1,70 @@
+{
+  "name": "CommunicationLog",
+  "type": "object",
+  "properties": {
+    "channel": {
+      "type": "string",
+      "enum": [
+        "whatsapp",
+        "email",
+        "in_app",
+        "sms",
+        "other"
+      ],
+      "default": "whatsapp",
+      "description": "Communication channel used"
+    },
+    "recipient": {
+      "type": "string",
+      "description": "Who the message was sent to"
+    },
+    "message_type": {
+      "type": "string",
+      "enum": [
+        "status_update",
+        "task_complete",
+        "earnings_alert",
+        "daily_summary",
+        "session_summary",
+        "blocker_alert",
+        "approval_request",
+        "error_alert",
+        "custom"
+      ],
+      "default": "status_update",
+      "description": "Type of message sent"
+    },
+    "message_content": {
+      "type": "string",
+      "description": "The actual message text sent"
+    },
+    "delivery_status": {
+      "type": "string",
+      "enum": [
+        "sent",
+        "delivered",
+        "read",
+        "failed",
+        "pending"
+      ],
+      "default": "pending",
+      "description": "Delivery status of the message"
+    },
+    "linked_task_id": {
+      "type": "string",
+      "description": "Task this message relates to"
+    },
+    "linked_session_id": {
+      "type": "string",
+      "description": "Session this message relates to"
+    },
+    "error_details": {
+      "type": "string",
+      "description": "Error details if delivery failed"
+    }
+  },
+  "required": [
+    "channel",
+    "message_type"
+  ]
+}

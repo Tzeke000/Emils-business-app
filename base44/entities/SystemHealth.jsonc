@@ -1,0 +1,66 @@
+{
+  "name": "SystemHealth",
+  "type": "object",
+  "properties": {
+    "bridge_online": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether the desktop bridge is reachable"
+    },
+    "whatsapp_online": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether WhatsApp integration is connected"
+    },
+    "last_bridge_health_check": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Last time bridge health was checked"
+    },
+    "last_successful_action": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp of last action that succeeded"
+    },
+    "last_failed_action": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp of last action that failed"
+    },
+    "last_failure_reason": {
+      "type": "string",
+      "description": "What the last failure was"
+    },
+    "active_session_id": {
+      "type": "string",
+      "description": "ID of the currently active work session"
+    },
+    "last_memory_sync": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Last time EmilMemory was read/written"
+    },
+    "active_task_count": {
+      "type": "number",
+      "default": 0,
+      "description": "Number of currently active tasks"
+    },
+    "queued_task_count": {
+      "type": "number",
+      "default": 0,
+      "description": "Number of tasks waiting in queue"
+    },
+    "overall_status": {
+      "type": "string",
+      "enum": [
+        "healthy",
+        "degraded",
+        "offline",
+        "error"
+      ],
+      "default": "offline",
+      "description": "Overall system health status"
+    }
+  },
+  "required": []
+}

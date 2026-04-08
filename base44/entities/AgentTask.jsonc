@@ -74,6 +74,36 @@
       "type": "string",
       "description": "Why the task is blocked"
     },
+    "blocked_by_type": {
+      "type": "string",
+      "enum": [
+        "approval",
+        "missing_credential",
+        "external_service",
+        "user_response",
+        "dependency",
+        "rate_limit",
+        "other"
+      ],
+      "description": "Structured blocker category"
+    },
+    "dependency_ids": {
+      "type": "string",
+      "description": "Comma-separated IDs of tasks this depends on"
+    },
+    "parent_task_id": {
+      "type": "string",
+      "description": "ID of the task this was retried from"
+    },
+    "original_task_id": {
+      "type": "string",
+      "description": "ID of the original task in a retry chain"
+    },
+    "retry_count": {
+      "type": "number",
+      "default": 0,
+      "description": "How many times this task lineage has been retried"
+    },
     "result_summary": {
       "type": "string",
       "description": "What happened when done"
@@ -109,6 +139,18 @@
       "type": "number",
       "default": 0,
       "description": "Revenue from this task in USD"
+    },
+    "outcome_score": {
+      "type": "number",
+      "description": "0-10 score of how well the task went"
+    },
+    "why_it_worked": {
+      "type": "string",
+      "description": "What contributed to success"
+    },
+    "why_it_failed": {
+      "type": "string",
+      "description": "What went wrong and lessons learned"
     }
   },
   "required": [

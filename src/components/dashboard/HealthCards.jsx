@@ -1,36 +1,42 @@
 import React from 'react';
-import { Wifi, WifiOff, MessageCircle, Camera, AlertTriangle, CheckCircle2, Clock } from 'lucide-react';
+import { Wifi, WifiOff, MessageCircle, AlertTriangle, CheckCircle2, Clock, Activity } from 'lucide-react';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 
-export default function HealthCards({ lastLog, lastSession, config }) {
-  const bridgeActive = lastLog && (new Date() - new Date(lastLog.created_date)) < 300000; // 5 min
-  const lastAction = lastLog ? format(new Date(lastLog.created_date), 'h:mm a') : 'Never';
-  const lastResult = lastLog?.result || 'none';
-  const hasActiveSession = lastSession?.status === 'active';
-  const pendingFailures = 0; // Could be computed from logs
+export default function HealthCards({ health, config }) {
+  const bridgeOnline = health?.bridge_online || false;
+  const lastCheck = health?.last_bridge_health_check ? format(new Date(health.last_bridge_health_check), 'h:mm a') : 'Never';
+  const overallStatus = health?.overall_status || 'offline';
+  const hasActiveSession = !!health?.active_session_id;
+
+  const statusColors = {
+    healthy: 'text-emerald-400',
+    degraded: 'text-amber-400',
+    offline: 'text-red-400',
+    error: 'text-red-400',
+  };
 
   const cards = [
     {
       label: 'Bridge',
-      value: bridgeActive ? 'Online' : 'Offline',
-      icon: bridgeActive ? Wifi : WifiOff,
-      color: bridgeActive ? 'text-emerald-400' : 'text-red-400',
-      sub: `Last: ${lastAction}`,
+      value: bridgeOnline ? 'Online' : 'Offline',
+      icon: bridgeOnline ? Wifi : WifiOff,
+      color: bridgeOnline ? 'text-emerald-400' : 'text-red-400',
+      sub: `Last check: ${lastCheck}`,
     },
     {
-      label: 'Last Result',
-      value: lastResult,
-      icon: lastResult === 'success' ? CheckCircle2 : lastResult === 'failed' ? AlertTriangle : Clock,
-      color: lastResult === 'success' ? 'text-emerald-400' : lastResult === 'failed' ? 'text-red-400' : 'text-muted-foreground',
-      sub: lastLog?.action_type?.replace('_', ' ') || 'No actions',
+      label: 'System',
+      value: overallStatus,
+      icon: overallStatus === 'healthy' ? CheckCircle2 : overallStatus === 'degraded' ? AlertTriangle : Activity,
+      color: statusColors[overallStatus] || 'text-muted-foreground',
+      sub: `${health?.active_task_count || 0} active · ${health?.queued_task_count || 0} queued`,
     },
     {
       label: 'Session',
       value: hasActiveSession ? 'Active' : 'Idle',
       icon: hasActiveSession ? CheckCircle2 : Clock,
       color: hasActiveSession ? 'text-primary' : 'text-muted-foreground',
-      sub: lastSession?.objective?.slice(0, 30) || 'No session',
+      sub: hasActiveSession ? 'Session running' : 'No active session',
     },
     {
       label: 'Approval Mode',

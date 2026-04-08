@@ -26,6 +26,40 @@
       "type": "string",
       "description": "Human-readable description of the action"
     },
+    "importance": {
+      "type": "string",
+      "enum": [
+        "low",
+        "medium",
+        "high",
+        "critical"
+      ],
+      "default": "medium",
+      "description": "How important this log entry is for proof/audit"
+    },
+    "verification_status": {
+      "type": "string",
+      "enum": [
+        "unverified",
+        "self_verified",
+        "user_verified"
+      ],
+      "default": "unverified",
+      "description": "Whether this action has been verified"
+    },
+    "artifact_type": {
+      "type": "string",
+      "enum": [
+        "screenshot",
+        "ocr",
+        "output_file",
+        "external_confirmation",
+        "log_only",
+        "none"
+      ],
+      "default": "none",
+      "description": "Type of proof artifact attached"
+    },
     "app_window": {
       "type": "string",
       "description": "App or window where action occurred"

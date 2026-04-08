@@ -45,6 +45,14 @@
     "whatsapp_summary_sent": {
       "type": "boolean",
       "default": false
+    },
+    "effectiveness_score": {
+      "type": "number",
+      "description": "0-10 score of how effective this session was"
+    },
+    "lessons_learned": {
+      "type": "string",
+      "description": "Key takeaways from this session"
     }
   },
   "required": [
