@@ -1,7 +1,7 @@
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
-import { DollarSign, ListTodo, TrendingUp, Moon } from 'lucide-react';
+import { DollarSign, ListTodo, TrendingUp, Moon, MessageCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import StatCard from '../components/dashboard/StatCard';
 import ActivityFeed from '../components/dashboard/ActivityFeed';
@@ -70,8 +70,8 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* Quick Action */}
-      <div className="mt-6">
+      {/* Quick Actions */}
+      <div className="mt-6 grid sm:grid-cols-2 gap-4">
         <Link
           to="/chat"
           className="block bg-gradient-to-r from-primary/10 to-accent/5 border border-primary/20 rounded-2xl p-6 hover:border-primary/40 transition-all duration-300 group"
@@ -86,6 +86,22 @@ export default function Dashboard() {
             </div>
           </div>
         </Link>
+        <a
+          href={base44.agents.getWhatsAppConnectURL('openClawAgent')}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="block bg-gradient-to-r from-emerald-500/10 to-emerald-500/5 border border-emerald-500/20 rounded-2xl p-6 hover:border-emerald-500/40 transition-all duration-300 group"
+        >
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-2xl bg-emerald-500/20 flex items-center justify-center group-hover:scale-105 transition-transform">
+              <MessageCircle className="w-6 h-6 text-emerald-400" />
+            </div>
+            <div>
+              <h3 className="text-sm font-semibold text-foreground">Connect WhatsApp</h3>
+              <p className="text-xs text-muted-foreground mt-0.5">Get updates from Emil directly on WhatsApp</p>
+            </div>
+          </div>
+        </a>
       </div>
     </div>
   );
