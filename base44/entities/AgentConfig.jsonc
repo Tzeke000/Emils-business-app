@@ -1,0 +1,44 @@
+{
+  "name": "AgentConfig",
+  "type": "object",
+  "properties": {
+    "agent_name": {
+      "type": "string",
+      "default": "OpenClaw Agent"
+    },
+    "business_goal": {
+      "type": "string",
+      "description": "Primary business objective"
+    },
+    "strategy": {
+      "type": "string",
+      "description": "Business strategy description"
+    },
+    "payout_method": {
+      "type": "string",
+      "enum": [
+        "bank_transfer",
+        "paypal",
+        "crypto",
+        "other"
+      ],
+      "default": "bank_transfer"
+    },
+    "payout_details": {
+      "type": "string",
+      "description": "Payout account details"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true
+    },
+    "auto_mode": {
+      "type": "boolean",
+      "default": false,
+      "description": "Allow agent to act autonomously"
+    }
+  },
+  "required": [
+    "agent_name"
+  ]
+}

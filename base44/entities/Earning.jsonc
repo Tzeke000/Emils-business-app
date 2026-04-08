@@ -1,0 +1,43 @@
+{
+  "name": "Earning",
+  "type": "object",
+  "properties": {
+    "source": {
+      "type": "string",
+      "description": "Revenue source name"
+    },
+    "amount": {
+      "type": "number",
+      "description": "Amount in USD"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "freelance",
+        "content",
+        "affiliate",
+        "product_sales",
+        "consulting",
+        "ads",
+        "other"
+      ],
+      "default": "other"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "confirmed",
+        "paid_out"
+      ],
+      "default": "pending"
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "source",
+    "amount"
+  ]
+}

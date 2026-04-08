@@ -1,0 +1,60 @@
+{
+  "name": "AgentTask",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "Task title"
+    },
+    "description": {
+      "type": "string",
+      "description": "Detailed task description"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "queued",
+        "in_progress",
+        "completed",
+        "failed"
+      ],
+      "default": "queued",
+      "description": "Current task status"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "research",
+        "content_creation",
+        "outreach",
+        "development",
+        "marketing",
+        "analytics",
+        "other"
+      ],
+      "default": "other"
+    },
+    "priority": {
+      "type": "string",
+      "enum": [
+        "low",
+        "medium",
+        "high",
+        "critical"
+      ],
+      "default": "medium"
+    },
+    "result": {
+      "type": "string",
+      "description": "Task outcome/result"
+    },
+    "revenue_generated": {
+      "type": "number",
+      "default": 0,
+      "description": "Revenue from this task in USD"
+    }
+  },
+  "required": [
+    "title"
+  ]
+}
