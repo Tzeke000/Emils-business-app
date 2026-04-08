@@ -1,0 +1,14 @@
+{
+  "name": "emil-bridge-supervisor",
+  "version": "1.0.0",
+  "description": "Local supervisor for Emil's desktop-control-bridge lifecycle management",
+  "main": "supervisor.js",
+  "scripts": {
+    "start": "node supervisor.js",
+    "setup": "node setup.js"
+  },
+  "dependencies": {},
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
