@@ -8,6 +8,7 @@ import ActivityFeed from '../components/dashboard/ActivityFeed';
 import EarningsChart from '../components/dashboard/EarningsChart';
 import HealthCards from '../components/dashboard/HealthCards';
 import EmilMindCard from '../components/dashboard/EmilMindCard';
+import BridgeControlPanel from '../components/bridge/BridgeControlPanel';
 
 export default function Dashboard() {
   const { data: tasks = [] } = useQuery({
@@ -56,7 +57,10 @@ export default function Dashboard() {
       </div>
 
       <div className="grid lg:grid-cols-5 gap-6">
-        <div className="lg:col-span-3"><EarningsChart earnings={earnings} /></div>
+        <div className="lg:col-span-3 space-y-6">
+          <EarningsChart earnings={earnings} />
+          <BridgeControlPanel health={healthRecords[0] || null} compact />
+        </div>
         <div className="lg:col-span-2 space-y-6">
           <EmilMindCard memory={memory} />
           <ActivityFeed tasks={tasks} />

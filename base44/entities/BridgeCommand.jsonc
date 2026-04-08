@@ -1,0 +1,76 @@
+{
+  "name": "BridgeCommand",
+  "type": "object",
+  "properties": {
+    "command_type": {
+      "type": "string",
+      "enum": [
+        "status",
+        "start",
+        "stop",
+        "restart"
+      ],
+      "description": "What bridge lifecycle command to execute"
+    },
+    "requested_by": {
+      "type": "string",
+      "enum": [
+        "user",
+        "emil_auto",
+        "watchdog"
+      ],
+      "default": "user",
+      "description": "Who requested this command"
+    },
+    "reason": {
+      "type": "string",
+      "description": "Why this command was requested"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "queued",
+        "running",
+        "succeeded",
+        "failed",
+        "expired"
+      ],
+      "default": "queued",
+      "description": "Execution status of this command"
+    },
+    "requested_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the command was requested"
+    },
+    "started_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When execution began"
+    },
+    "finished_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When execution finished"
+    },
+    "result_summary": {
+      "type": "string",
+      "description": "What happened"
+    },
+    "error_message": {
+      "type": "string",
+      "description": "Error details if failed"
+    },
+    "before_health_status": {
+      "type": "string",
+      "description": "SystemHealth overall_status before command"
+    },
+    "after_health_status": {
+      "type": "string",
+      "description": "SystemHealth overall_status after command"
+    }
+  },
+  "required": [
+    "command_type"
+  ]
+}

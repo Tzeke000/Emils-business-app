@@ -7,6 +7,74 @@
       "default": false,
       "description": "Whether the desktop bridge is reachable"
     },
+    "bridge_status": {
+      "type": "string",
+      "enum": [
+        "running",
+        "stopped",
+        "starting",
+        "stopping",
+        "restarting",
+        "crashed",
+        "unknown"
+      ],
+      "default": "unknown",
+      "description": "Detailed bridge process state"
+    },
+    "bridge_port": {
+      "type": "number",
+      "default": 47821,
+      "description": "Port the bridge listens on"
+    },
+    "bridge_last_health_ok_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Last time the bridge responded healthy"
+    },
+    "bridge_last_restart_requested_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Last time a restart was requested"
+    },
+    "bridge_last_restart_result": {
+      "type": "string",
+      "enum": [
+        "succeeded",
+        "failed",
+        "pending",
+        "none"
+      ],
+      "default": "none",
+      "description": "Result of the last restart attempt"
+    },
+    "bridge_restart_attempt_count_24h": {
+      "type": "number",
+      "default": 0,
+      "description": "Number of restart attempts in last 24 hours"
+    },
+    "bridge_listener_pid": {
+      "type": "string",
+      "description": "Process ID of the running bridge listener"
+    },
+    "bridge_repo_path": {
+      "type": "string",
+      "description": "Local filesystem path to the bridge repository"
+    },
+    "bridge_envfile_path": {
+      "type": "string",
+      "description": "Path to the bridge .env config file"
+    },
+    "watchdog_state": {
+      "type": "string",
+      "enum": [
+        "active",
+        "paused",
+        "disabled",
+        "error"
+      ],
+      "default": "disabled",
+      "description": "State of the bridge watchdog monitor"
+    },
     "whatsapp_online": {
       "type": "boolean",
       "default": false,

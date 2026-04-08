@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Switch } from '@/components/ui/switch';
 import { Save, Moon, Shield, MessageCircle, DollarSign } from 'lucide-react';
 import { toast } from 'sonner';
+import BridgeControlPanel from '../components/bridge/BridgeControlPanel';
 
 export default function Settings() {
   const queryClient = useQueryClient();
@@ -18,6 +19,10 @@ export default function Settings() {
   });
 
   const config = configs[0] || null;
+  const { data: healthRecords = [] } = useQuery({
+    queryKey: ['systemHealth'],
+    queryFn: () => base44.entities.SystemHealth.list('-updated_date', 1),
+  });
 
   const [form, setForm] = useState({
     agent_name: 'Emil',
@@ -159,6 +164,8 @@ export default function Settings() {
             <Input value={form.payout_details} onChange={(e) => setForm({ ...form, payout_details: e.target.value })} placeholder="Account info, wallet address, etc." className="bg-secondary border-border" />
           </div>
         </div>
+
+        <BridgeControlPanel health={healthRecords[0] || null} />
 
         <Button onClick={() => saveMutation.mutate(form)} disabled={saveMutation.isPending} className="w-full gap-2">
           <Save className="w-4 h-4" /> {saveMutation.isPending ? 'Saving...' : 'Save Settings'}

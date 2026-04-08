@@ -26,6 +26,7 @@
 - [Decision Policy for Self-Created Tasks](#decision-policy-for-self-created-tasks)
 - [Credential & Secret Handling](#credential--secret-handling)
 - [Time-Based Automation](#time-based-automation)
+- [Bridge Lifecycle Management](#bridge-lifecycle-management)
 - [App Pages](#app-pages)
 - [Tech Stack](#tech-stack)
 
@@ -608,12 +609,186 @@ These are Emil's intended behavioral loops:
 |------|-----------|-------------|
 | Morning review | Daily, start of day | Check overnight changes, stalled tasks, summarize plan |
 | Stalled task check | Hourly | Any active task > 1hr with no activity log = investigate |
+| Bridge health check | Every 5 minutes | Ping bridge, update SystemHealth, auto-restart if needed |
 | Session timeout | Continuous | If active session > 4hrs, prompt for wrap-up |
 | End-of-day summary | Daily, end of day | Summarize work, earnings, blockers, next steps |
 | Earnings follow-up | Weekly | Check pending earnings for confirmation status |
-| Health check | Every 5 minutes | Ping bridge, update SystemHealth |
+| Bridge watchdog | Continuous | If bridge goes offline during work, attempt restart per rules |
 
 These loops may be implemented as Base44 scheduled automations or as behavioral patterns Emil follows during active conversations.
+
+---
+
+## Bridge Lifecycle Management
+
+### Architecture: Why a Local Companion is Required
+
+**The Base44 web app CANNOT directly start, stop, or restart Windows processes.** The app runs in the browser — it has no access to `localhost`, the Windows process tree, or the local filesystem.
+
+To bridge this gap, Emil uses a **command queue pattern**:
+
+```
+┌──────────────────────┐     ┌─────────────────────┐     ┌──────────────────────┐
+│  Base44 Web App       │     │  BridgeCommand       │     │  Local Supervisor    │
+│  (Browser)            │     │  Entity (Queue)      │     │  (Windows PC)        │
+│                       │     │                      │     │                      │
+│  User clicks          │────►│  command_type:restart │────►│  Polls for queued    │
+│  "Restart" button     │     │  status: queued       │     │  commands             │
+│  OR Emil decides      │     │  requested_at: now    │     │  Executes script      │
+│  to restart           │     │                      │     │  Updates status        │
+│                       │◄────│  status: succeeded    │◄────│  Reports result       │
+│  Dashboard updates    │     │  after_health: healthy│     │                      │
+└──────────────────────┘     └─────────────────────┘     └──────────────────────┘
+```
+
+### BridgeCommand Entity
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `command_type` | enum | **Required.** `status`, `start`, `stop`, `restart` |
+| `requested_by` | enum | `user`, `emil_auto`, `watchdog` |
+| `reason` | string | Why this command was requested |
+| `status` | enum | `queued`, `running`, `succeeded`, `failed`, `expired` |
+| `requested_at` | datetime | When the command was created |
+| `started_at` | datetime | When execution began |
+| `finished_at` | datetime | When execution completed |
+| `result_summary` | string | What happened |
+| `error_message` | string | Error details if failed |
+| `before_health_status` | string | SystemHealth status before command |
+| `after_health_status` | string | SystemHealth status after command |
+
+### Expanded SystemHealth Fields (Bridge Lifecycle)
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `bridge_status` | enum | `running`, `stopped`, `starting`, `stopping`, `restarting`, `crashed`, `unknown` |
+| `bridge_port` | number | Port the bridge listens on (default: 47821) |
+| `bridge_last_health_ok_at` | datetime | Last time bridge responded to health check |
+| `bridge_last_restart_requested_at` | datetime | Last time a restart was requested |
+| `bridge_last_restart_result` | enum | `succeeded`, `failed`, `pending`, `none` |
+| `bridge_restart_attempt_count_24h` | number | Restart attempts in last 24 hours |
+| `bridge_listener_pid` | string | Process ID of the running bridge |
+| `bridge_repo_path` | string | Local filesystem path to bridge repo |
+| `bridge_envfile_path` | string | Path to bridge .env config file |
+| `watchdog_state` | enum | `active`, `paused`, `disabled`, `error` |
+
+### Emil's Restart Rules (CRITICAL)
+
+1. **Only restart if**: bridge health is DOWN or >= 3 consecutive bridge-specific failures
+2. **Max 2 restarts per hour** — check timestamps of recent BridgeCommand records
+3. **If restart fails twice in succession**: STOP trying, escalate to user
+4. **Always update SystemHealth** before and after the attempt
+5. **Restart is NOT complete** until a health check passes after the restart
+6. **Log every attempt** to ActivityLog with importance: `critical`
+7. **After success**: verify `bridge_status: running` and `bridge_online: true`
+
+### Local Supervisor / Worker Setup
+
+The local supervisor is a lightweight service running on the user's Windows PC that:
+
+1. **Polls** the BridgeCommand entity for `status: queued` commands (every 5-10 seconds)
+2. **Executes** the appropriate PowerShell script
+3. **Updates** the BridgeCommand record with results
+4. **Updates** SystemHealth with current bridge state
+
+#### Required Scripts
+
+These scripts must exist on the local machine and be accessible to the supervisor:
+
+**`status_bridge.ps1`**
+```powershell
+# Check if the bridge process is running and responding
+# Returns: JSON { "running": true/false, "pid": "1234", "port": 47821, "healthy": true/false }
+$process = Get-Process -Name "desktop-control-bridge" -ErrorAction SilentlyContinue
+if ($process) {
+    try {
+        $response = Invoke-RestMethod -Uri "http://127.0.0.1:47821/health" -TimeoutSec 5
+        Write-Output (@{ running = $true; pid = $process.Id.ToString(); port = 47821; healthy = $true } | ConvertTo-Json)
+    } catch {
+        Write-Output (@{ running = $true; pid = $process.Id.ToString(); port = 47821; healthy = $false } | ConvertTo-Json)
+    }
+} else {
+    Write-Output (@{ running = $false; pid = $null; port = 47821; healthy = $false } | ConvertTo-Json)
+}
+```
+
+**`start_bridge.ps1`**
+```powershell
+# Start the bridge process
+# Expects: $env:BRIDGE_REPO_PATH to be set
+$bridgePath = $env:BRIDGE_REPO_PATH
+if (-not $bridgePath) { $bridgePath = "C:\Emil\desktop-control-bridge" }
+Push-Location $bridgePath
+Start-Process -FilePath "node" -ArgumentList "server.js" -WindowStyle Hidden -PassThru
+Start-Sleep -Seconds 3
+# Verify
+try {
+    $response = Invoke-RestMethod -Uri "http://127.0.0.1:47821/health" -TimeoutSec 5
+    Write-Output "Bridge started successfully"
+} catch {
+    Write-Error "Bridge started but health check failed"
+}
+Pop-Location
+```
+
+**`stop_bridge.ps1`**
+```powershell
+# Gracefully stop the bridge process
+$process = Get-Process -Name "desktop-control-bridge" -ErrorAction SilentlyContinue
+if ($process) {
+    Stop-Process -Id $process.Id -Force
+    Start-Sleep -Seconds 2
+    $check = Get-Process -Name "desktop-control-bridge" -ErrorAction SilentlyContinue
+    if ($check) { Write-Error "Bridge process did not stop" }
+    else { Write-Output "Bridge stopped successfully" }
+} else {
+    Write-Output "Bridge was not running"
+}
+```
+
+**`restart_bridge.ps1`**
+```powershell
+# Stop then start the bridge
+& "$PSScriptRoot\stop_bridge.ps1"
+Start-Sleep -Seconds 2
+& "$PSScriptRoot\start_bridge.ps1"
+```
+
+#### Supervisor Pseudocode
+
+```
+loop every 10 seconds:
+    commands = fetch BridgeCommand where status == "queued" order by requested_at
+    for each command:
+        if (now - command.requested_at) > 5 minutes:
+            update command: status = "expired"
+            continue
+        
+        update command: status = "running", started_at = now
+        
+        switch command.command_type:
+            case "status":  result = run status_bridge.ps1
+            case "start":   result = run start_bridge.ps1
+            case "stop":    result = run stop_bridge.ps1
+            case "restart": result = run restart_bridge.ps1
+        
+        if result.success:
+            update command: status = "succeeded", finished_at = now, result_summary = result.output
+        else:
+            update command: status = "failed", finished_at = now, error_message = result.error
+        
+        # Update SystemHealth
+        healthResult = run status_bridge.ps1
+        update SystemHealth: bridge_online, bridge_status, bridge_listener_pid, etc.
+```
+
+### Important Notes
+
+- The **supervisor must be running** on the local machine for commands to execute
+- If the supervisor is down, commands will accumulate and eventually expire
+- The supervisor should authenticate with Base44 using a service token stored locally
+- Bridge scripts should be customized for the user's actual bridge installation
+- The `watchdog_state` field tracks whether the supervisor's automated monitoring is active
 
 ---
 
@@ -648,17 +823,19 @@ These loops may be implemented as Base44 scheduled automations or as behavioral 
 1. **Read all EmilMemory** slots to restore your state
 2. **Read AgentConfig** to know your rules (approval mode, WhatsApp rules)
 3. **Read/update SystemHealth** to check and report system status
-4. **Check for pending tasks** (status: `queued` or `waiting_on_user`)
-5. **Check for stale tasks** (active > 1hr with no log entries)
-6. **Create a WorkSession** if starting a new block of work
-7. **Execute tasks** following the lifecycle rules and dependency chains
-8. **Log every action** to ActivityLog with proper importance and verification
-9. **Track earnings** with proper attribution
-10. **Log all messages** to CommunicationLog
-11. **Score outcomes** on completed/failed tasks and sessions
-12. **Update memory** when state changes (following quality rules)
-13. **Send WhatsApp updates** following the rules
-14. **Close the session** with summary and effectiveness score when done
+4. **Check bridge health** — if offline, check BridgeCommand history before attempting restart
+5. **Check for pending tasks** (status: `queued` or `waiting_on_user`)
+6. **Check for stale tasks** (active > 1hr with no log entries)
+7. **Check for expired BridgeCommands** and clean them up
+8. **Create a WorkSession** if starting a new block of work
+9. **Execute tasks** following the lifecycle rules and dependency chains
+10. **Log every action** to ActivityLog with proper importance and verification
+11. **Track earnings** with proper attribution
+12. **Log all messages** to CommunicationLog
+13. **Score outcomes** on completed/failed tasks and sessions
+14. **Update memory** when state changes (following quality rules)
+15. **Send WhatsApp updates** following the rules
+16. **Close the session** with summary and effectiveness score when done
 
 ---
 
