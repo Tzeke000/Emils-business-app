@@ -14,12 +14,15 @@
       "type": "string",
       "enum": [
         "queued",
-        "in_progress",
+        "active",
+        "blocked",
+        "waiting_on_user",
         "completed",
-        "failed"
+        "failed",
+        "abandoned",
+        "retried"
       ],
-      "default": "queued",
-      "description": "Current task status"
+      "default": "queued"
     },
     "category": {
       "type": "string",
@@ -30,6 +33,7 @@
         "development",
         "marketing",
         "analytics",
+        "desktop_control",
         "other"
       ],
       "default": "other"
@@ -44,9 +48,62 @@
       ],
       "default": "medium"
     },
-    "result": {
+    "source": {
       "type": "string",
-      "description": "Task outcome/result"
+      "enum": [
+        "emil_auto",
+        "user_request",
+        "scheduled",
+        "retry",
+        "dependency"
+      ],
+      "default": "user_request",
+      "description": "Who/what created this task"
+    },
+    "started_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When work actually began"
+    },
+    "completed_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When task finished"
+    },
+    "blocker_reason": {
+      "type": "string",
+      "description": "Why the task is blocked"
+    },
+    "result_summary": {
+      "type": "string",
+      "description": "What happened when done"
+    },
+    "artifact_link": {
+      "type": "string",
+      "description": "URL or path to output artifact"
+    },
+    "next_step": {
+      "type": "string",
+      "description": "What should happen after this task"
+    },
+    "session_id": {
+      "type": "string",
+      "description": "Which work session this belongs to"
+    },
+    "requires_approval": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether user must approve before execution"
+    },
+    "approval_status": {
+      "type": "string",
+      "enum": [
+        "not_needed",
+        "pending",
+        "approved",
+        "rejected"
+      ],
+      "default": "not_needed"
     },
     "revenue_generated": {
       "type": "number",

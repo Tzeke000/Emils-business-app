@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { LayoutDashboard, MessageSquare, ListTodo, DollarSign, Settings } from 'lucide-react';
+import { LayoutDashboard, MessageSquare, ListTodo, DollarSign, Settings, Activity, Monitor } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const navItems = [
@@ -8,6 +8,7 @@ const navItems = [
   { path: '/chat', icon: MessageSquare, label: 'Chat' },
   { path: '/tasks', icon: ListTodo, label: 'Tasks' },
   { path: '/earnings', icon: DollarSign, label: 'Earn' },
+  { path: '/activity', icon: Activity, label: 'Log' },
   { path: '/settings', icon: Settings, label: 'Settings' },
 ];
 

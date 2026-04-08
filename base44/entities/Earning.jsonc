@@ -28,9 +28,37 @@
       "enum": [
         "pending",
         "confirmed",
-        "paid_out"
+        "collected",
+        "paid_out",
+        "disputed"
       ],
       "default": "pending"
+    },
+    "task_id": {
+      "type": "string",
+      "description": "ID of the task that generated this earning"
+    },
+    "session_id": {
+      "type": "string",
+      "description": "Work session that produced this earning"
+    },
+    "client": {
+      "type": "string",
+      "description": "Client or platform name"
+    },
+    "expected_amount": {
+      "type": "number",
+      "description": "Expected amount before confirmation"
+    },
+    "confidence": {
+      "type": "string",
+      "enum": [
+        "confirmed",
+        "likely",
+        "speculative"
+      ],
+      "default": "likely",
+      "description": "How certain is this earning"
     },
     "notes": {
       "type": "string"

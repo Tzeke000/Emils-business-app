@@ -10,6 +10,8 @@ import Dashboard from './pages/Dashboard';
 import Chat from './pages/Chat';
 import Tasks from './pages/Tasks';
 import Earnings from './pages/Earnings';
+import ActivityLog from './pages/ActivityLog';
+import Sessions from './pages/Sessions';
 import Settings from './pages/Settings';
 
 const AuthenticatedApp = () => {
@@ -43,6 +45,8 @@ const AuthenticatedApp = () => {
         <Route path="/chat" element={<Chat />} />
         <Route path="/tasks" element={<Tasks />} />
         <Route path="/earnings" element={<Earnings />} />
+        <Route path="/activity" element={<ActivityLog />} />
+        <Route path="/sessions" element={<Sessions />} />
         <Route path="/settings" element={<Settings />} />
       </Route>
       <Route path="*" element={<PageNotFound />} />

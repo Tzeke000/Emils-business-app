@@ -1,0 +1,53 @@
+{
+  "name": "WorkSession",
+  "type": "object",
+  "properties": {
+    "objective": {
+      "type": "string",
+      "description": "What this session aims to accomplish"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "paused",
+        "completed",
+        "aborted"
+      ],
+      "default": "active"
+    },
+    "started_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "ended_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "tasks_touched": {
+      "type": "number",
+      "default": 0,
+      "description": "Count of tasks worked on"
+    },
+    "tasks_completed": {
+      "type": "number",
+      "default": 0
+    },
+    "earnings_generated": {
+      "type": "number",
+      "default": 0,
+      "description": "Total earnings from this session"
+    },
+    "summary": {
+      "type": "string",
+      "description": "End-of-session summary"
+    },
+    "whatsapp_summary_sent": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "required": [
+    "objective"
+  ]
+}

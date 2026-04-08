@@ -4,7 +4,7 @@
   "properties": {
     "agent_name": {
       "type": "string",
-      "default": "OpenClaw Agent"
+      "default": "Emil"
     },
     "business_goal": {
       "type": "string",
@@ -13,6 +13,36 @@
     "strategy": {
       "type": "string",
       "description": "Business strategy description"
+    },
+    "approval_mode": {
+      "type": "string",
+      "enum": [
+        "auto",
+        "ask_first",
+        "ask_if_money",
+        "ask_if_external",
+        "ask_if_destructive"
+      ],
+      "default": "ask_first",
+      "description": "When Emil should ask before acting"
+    },
+    "whatsapp_rules": {
+      "type": "string",
+      "enum": [
+        "urgent_only",
+        "task_complete",
+        "money_events",
+        "daily_summary",
+        "session_summary",
+        "all"
+      ],
+      "default": "daily_summary",
+      "description": "When Emil can message you on WhatsApp"
+    },
+    "max_messages_per_hour": {
+      "type": "number",
+      "default": 3,
+      "description": "Max WhatsApp messages per hour (anti-spam)"
     },
     "payout_method": {
       "type": "string",
@@ -25,8 +55,7 @@
       "default": "bank_transfer"
     },
     "payout_details": {
-      "type": "string",
-      "description": "Payout account details"
+      "type": "string"
     },
     "is_active": {
       "type": "boolean",

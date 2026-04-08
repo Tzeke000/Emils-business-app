@@ -1,0 +1,33 @@
+{
+  "name": "EmilMemory",
+  "type": "object",
+  "properties": {
+    "key": {
+      "type": "string",
+      "enum": [
+        "current_objective",
+        "current_constraint",
+        "current_blocker",
+        "last_meaningful_action",
+        "next_planned_action",
+        "confidence_level",
+        "user_preferences",
+        "whatsapp_rules",
+        "approval_mode"
+      ],
+      "description": "Memory slot identifier"
+    },
+    "value": {
+      "type": "string",
+      "description": "Current value of this memory slot"
+    },
+    "last_updated_reason": {
+      "type": "string",
+      "description": "Why this was last changed"
+    }
+  },
+  "required": [
+    "key",
+    "value"
+  ]
+}

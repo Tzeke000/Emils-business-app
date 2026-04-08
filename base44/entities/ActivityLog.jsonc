@@ -1,0 +1,73 @@
+{
+  "name": "ActivityLog",
+  "type": "object",
+  "properties": {
+    "action_type": {
+      "type": "string",
+      "enum": [
+        "mouse_click",
+        "keyboard_input",
+        "window_focus",
+        "screenshot",
+        "ocr_read",
+        "app_open",
+        "browser_navigate",
+        "file_operation",
+        "api_call",
+        "task_update",
+        "earning_logged",
+        "approval_request",
+        "error",
+        "other"
+      ],
+      "description": "What type of action was performed"
+    },
+    "description": {
+      "type": "string",
+      "description": "Human-readable description of the action"
+    },
+    "app_window": {
+      "type": "string",
+      "description": "App or window where action occurred"
+    },
+    "command_sent": {
+      "type": "string",
+      "description": "Exact bridge command or API call"
+    },
+    "result": {
+      "type": "string",
+      "enum": [
+        "success",
+        "failed",
+        "partial",
+        "pending",
+        "skipped"
+      ],
+      "default": "success"
+    },
+    "confidence": {
+      "type": "number",
+      "description": "0-1 confidence the action succeeded"
+    },
+    "screenshot_path": {
+      "type": "string",
+      "description": "Path to verification screenshot"
+    },
+    "error_message": {
+      "type": "string",
+      "description": "Error details if failed"
+    },
+    "task_id": {
+      "type": "string",
+      "description": "Related task ID"
+    },
+    "session_id": {
+      "type": "string",
+      "description": "Related work session ID"
+    }
+  },
+  "required": [
+    "action_type",
+    "description"
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "name": "DesktopProfile",
+  "type": "object",
+  "properties": {
+    "app_name": {
+      "type": "string",
+      "description": "Application name (e.g. Chrome, Cursor, Terminal)"
+    },
+    "process_name": {
+      "type": "string",
+      "description": "Process name for window matching"
+    },
+    "window_title_contains": {
+      "type": "string",
+      "description": "Expected title substring when focused"
+    },
+    "anchors": {
+      "type": "string",
+      "description": "JSON string of anchor points: [{name, x, y, condition, description}]"
+    },
+    "safe_zones": {
+      "type": "string",
+      "description": "JSON string of safe click regions: [{name, x, y, width, height}]"
+    },
+    "forbidden_zones": {
+      "type": "string",
+      "description": "JSON string of forbidden click regions: [{name, x, y, width, height, reason}]"
+    },
+    "fallback_commands": {
+      "type": "string",
+      "description": "JSON string of fallback commands if primary action fails"
+    },
+    "verification_rule": {
+      "type": "string",
+      "description": "How to verify a click worked (e.g. 'ocr_contains: Submit', 'window_title_changes')"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Special handling notes for this app"
+    }
+  },
+  "required": [
+    "app_name"
+  ]
+}
